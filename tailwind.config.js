@@ -5,6 +5,9 @@ export default {
     container: {
       center: true,
     },
+    fontFamily: {
+      Roboto: ["Roboto"],
+    },
   },
   plugins: [],
 };
