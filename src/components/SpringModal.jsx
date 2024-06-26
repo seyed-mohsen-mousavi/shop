@@ -1,3 +1,4 @@
+import * as React from "react";
 import PropTypes from "prop-types";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
@@ -5,7 +6,8 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useSpring, animated } from "@react-spring/web";
-
+import { removeItem } from "../features/cart/cartSlice";
+import { useDispatch } from "react-redux";
 const Fade = React.forwardRef(function Fade(props, ref) {
   const {
     children,
@@ -59,14 +61,12 @@ const style = {
   p: 4,
 };
 
-export default function SpringModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+export default function SpringModal({ open, setOpen, item }) {
   const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"
@@ -83,14 +83,31 @@ export default function SpringModal() {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="spring-modal-title" variant="h6" component="h2">
-              Text in a modal
+              Are you sure you want to remove this item from the cart?
             </Typography>
-            <Typography id="spring-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
+            <div className="flex gap-2 mt-5">
+              <Button
+                className="w-full !text-gray-800"
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                className="w-full"
+                onClick={() => {
+                  setOpen(false);
+                  dispatch(removeItem(item));
+                }}
+              >
+                Remove
+              </Button>
+            </div>
           </Box>
         </Fade>
       </Modal>
     </div>
   );
 }
+// onClick={() => dispatch(removeItem(item))}

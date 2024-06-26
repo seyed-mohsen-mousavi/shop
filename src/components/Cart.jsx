@@ -3,15 +3,17 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { List, ListItem } from "@mui/material";
 import { TrashIcon } from "@heroicons/react/16/solid";
-import { useDispatch, useSelector } from "react-redux";
-import { removeItem } from "../features/cart/cartSlice";
+import { useSelector } from "react-redux";
+
 import SpringModal from "./SpringModal";
+import { useState } from "react";
 function Cart() {
   const state = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [item, setItem] = useState([]);
   return (
     <Box sx={{ width: 350 }} role="presentation" fontFamily={"Roboto"}>
-      <SpringModal />
+      <SpringModal open={open} setOpen={setOpen} item={item} />
       <h2 className="text-xl font-bold p-5">Cart</h2>
       <Divider />
       <List>
@@ -35,18 +37,19 @@ function Cart() {
                     className="!min-w-2 w-7 h-7 !rounded-full !p-0"
                     variant="outlined"
                     color="error"
+                    onClick={() => {
+                      setOpen(true);
+                      setItem(item);
+                    }}
                   >
-                    <TrashIcon
-                      className="w-4 "
-                      onClick={() => dispatch(removeItem(item))}
-                    />
+                    <TrashIcon className="w-4" />
                   </Button>
                 </div>
               </div>
             </ListItem>
           ))
         ) : (
-          <img src="/empty.png" className="h-56 mx-auto " />
+          <img src="/empty.png" className="h-56 mx-auto animate-fade" />
         )}
       </List>
     </Box>

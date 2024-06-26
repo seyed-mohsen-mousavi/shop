@@ -9,5 +9,5 @@ export default {
       Roboto: ["Roboto"],
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animated')],
 };
