@@ -16,6 +16,7 @@ function shallowEqualityCheck(obj1, obj2) {
   }
   return true;
 }
+// mr.rooter
 const cartSlice = createSlice({
   name: "cart",
   initialState,

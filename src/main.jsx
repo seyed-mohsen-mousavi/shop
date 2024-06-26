@@ -8,3 +8,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
   </React.StrictMode>,
 )
+// mr.rooter > please follow my github page ,,, بچه های ایران که میدونید چیکار کنید

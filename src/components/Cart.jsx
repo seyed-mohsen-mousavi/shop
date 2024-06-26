@@ -27,6 +27,7 @@ function Cart() {
                     alt="asd"
                     className="rounded-lg w-16 h-16 object-cover"
                   />
+                  {/* mr.rooter */}
                   <div>
                     <h1 className="text-lg line-clamp-1">{item.title}</h1>
                     <p className="text-gray-400 text-sm">$999</p>

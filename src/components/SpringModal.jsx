@@ -85,6 +85,7 @@ export default function SpringModal({ open, setOpen, item }) {
             <Typography id="spring-modal-title" variant="h6" component="h2">
               Are you sure you want to remove this item from the cart?
             </Typography>
+            {/* mr.rooter */}
             <div className="flex gap-2 mt-5">
               <Button
                 className="w-full !text-gray-800"

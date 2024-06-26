@@ -12,6 +12,7 @@ export default function Card({ item }) {
           alt="product image"
         />
       </a>
+      {/* mr.rooter */}
       <div className="px-1 py-4 h-full">
         <a href="#">
           <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white line-clamp-2">
