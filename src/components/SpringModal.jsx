@@ -67,7 +67,7 @@ export default function SpringModal({ open, setOpen, item }) {
 
   return (
     <div>
-      <Modal
+      <Modal 
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"
         open={open}
@@ -81,7 +81,7 @@ export default function SpringModal({ open, setOpen, item }) {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={style} borderRadius={5}>
             <Typography id="spring-modal-title" variant="h6" component="h2">
               Are you sure you want to remove this item from the cart?
             </Typography>

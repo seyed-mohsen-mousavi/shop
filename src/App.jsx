@@ -1,17 +1,16 @@
 import * as React from "react";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import { ShoppingBagIcon, ShoppingCartIcon } from "@heroicons/react/16/solid";
+import { ShoppingCartIcon } from "@heroicons/react/16/solid";
 import Card from "./components/Card";
-import { Provider, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "./features/store";
-import axios from "axios";
 import LoadingCard from "./components/LoadingCard";
 import Cart from "./components/Cart";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import "@fontsource/roboto/300.css";
+import { getAsyncData } from "./features/data/dataSlice";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -21,15 +20,14 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     padding: "0 4px",
   },
 }));
-export default function TemporaryDrawer() {
+function TemporaryDrawer() {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-
   return (
     <Provider store={store}>
-      <div className=" container p-2">
+      <div className=" container p-2 h-screen">
         <CartBtn toggleDrawer={toggleDrawer} />
         <ContainerCard />
         <Drawer open={open} onClose={toggleDrawer(false)}>
@@ -42,45 +40,33 @@ export default function TemporaryDrawer() {
 // mr.rooter
 
 function ContainerCard() {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [data, setData] = React.useState([]);
+  const dispatch = useDispatch();
+  const { loading, data, error } = useSelector((state) => state.data);
   React.useEffect(() => {
-    async function fetchData() {
-      try {
-        setIsLoading(true);
-        const { data } = await axios.get(
-          "https://jsonplaceholder.typicode.com/photos"
-        );
-        setData(data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 justify-center">
-        <LoadingCard />
-        <LoadingCard />
-        <LoadingCard />
-        <LoadingCard />
-        <LoadingCard />
-        <LoadingCard />
-        <LoadingCard />
-        <LoadingCard />
-      </div>
-    );
-  }
+    dispatch(getAsyncData()), [dispatch];
+  }, [dispatch]);
+  if (error) return <p>Please Try Again later :(</p>;
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 justify-center">
-      {data.map((e) => {
-        if (e.id < 21) {
-          return <Card key={e.id} item={e} />;
-        }
-      })}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center">
+      {loading ? (
+        <>
+          {" "}
+          <LoadingCard />
+          <LoadingCard />
+          <LoadingCard />
+          <LoadingCard />
+          <LoadingCard />
+          <LoadingCard />
+          <LoadingCard />
+          <LoadingCard />
+        </>
+      ) : (
+        data.map((e) => {
+          if (e.id < 21) {
+            return <Card key={e.id} item={e} />;
+          }
+        })
+      )}
     </div>
   );
 }
@@ -88,9 +74,11 @@ function CartBtn({ toggleDrawer }) {
   const numOfCart = useSelector((state) => state.cart).items.length;
   return (
     <IconButton aria-label="cart" onClick={toggleDrawer(true)}>
-      <StyledBadge badgeContent={numOfCart} color="secondary">
+      <StyledBadge badgeContent={numOfCart} color="primary">
         <ShoppingCartIcon className="w-7" />
       </StyledBadge>
     </IconButton>
   );
 }
+
+export default TemporaryDrawer;
