@@ -9,7 +9,8 @@ export default function Card({ item }) {
         <img
           className="w-96 h-80 bg-gray-400  object-cover  rounded-xl "
           src={item.url}
-          alt="product image"
+          alt={`${item.title} image`}
+          loading="lazy"
         />
       </a>
       {/* mr.rooter */}

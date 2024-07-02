@@ -11,7 +11,8 @@ import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import "@fontsource/roboto/300.css";
 import { getAsyncData } from "./features/data/dataSlice";
-
+import "./style.css";
+import { Button, ButtonBase } from "@mui/material";
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     right: -3,
@@ -25,11 +26,28 @@ function TemporaryDrawer() {
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+  const [load, setLoad] = React.useState(21);
   return (
     <Provider store={store}>
-      <div className=" container p-2 h-screen">
-        <CartBtn toggleDrawer={toggleDrawer} />
-        <ContainerCard />
+      <div className=" container p-2 h-screen w-full">
+        <div className="flex w-full justify-between flex-row-reverse mb-5">
+          <CartBtn toggleDrawer={toggleDrawer} />
+          <section className="wrapper">
+            <div className="top">Shop</div>
+            <div className="bottom" aria-hidden="true">
+              Shop
+            </div>
+          </section>{" "}
+        </div>
+        <ContainerCard load={load} />
+        <div className="w-full flex justify-center my-3">
+          <Button
+            variant="outlined"
+            onClick={() => setLoad((e) => (e = e + 8))}
+          >
+            Load More ...
+          </Button>
+        </div>
         <Drawer open={open} onClose={toggleDrawer(false)}>
           <Cart />
         </Drawer>
@@ -39,7 +57,7 @@ function TemporaryDrawer() {
 }
 // mr.rooter
 
-function ContainerCard() {
+function ContainerCard({ load }) {
   const dispatch = useDispatch();
   const { loading, data, error } = useSelector((state) => state.data);
   React.useEffect(() => {
@@ -47,7 +65,7 @@ function ContainerCard() {
   }, [dispatch]);
   if (error) return <p>Please Try Again later :(</p>;
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center w-full">
       {loading ? (
         <>
           {" "}
@@ -62,7 +80,7 @@ function ContainerCard() {
         </>
       ) : (
         data.map((e) => {
-          if (e.id < 21) {
+          if (e.id < load) {
             return <Card key={e.id} item={e} />;
           }
         })
@@ -73,9 +91,14 @@ function ContainerCard() {
 function CartBtn({ toggleDrawer }) {
   const numOfCart = useSelector((state) => state.cart).items.length;
   return (
-    <IconButton aria-label="cart" onClick={toggleDrawer(true)}>
-      <StyledBadge badgeContent={numOfCart} color="primary">
-        <ShoppingCartIcon className="w-7" />
+    <IconButton
+      size="large"
+      aria-label="cart"
+      onClick={toggleDrawer(true)}
+      className="!rounded-full !p-0 !px-4 !m-0"
+    >
+      <StyledBadge badgeContent={numOfCart}>
+        <ShoppingCartIcon className="w-7 h-7 text-black" />
       </StyledBadge>
     </IconButton>
   );
