@@ -13,6 +13,9 @@ import "@fontsource/roboto/300.css";
 import { getAsyncData } from "./features/data/dataSlice";
 import "./style.css";
 import { Button, ButtonBase } from "@mui/material";
+import Comments from "./components/Comments";
+import toast, { Toaster } from "react-hot-toast";
+
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     right: -3,
@@ -21,7 +24,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     padding: "0 4px",
   },
 }));
-function TemporaryDrawer() {
+function App() {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -29,6 +32,7 @@ function TemporaryDrawer() {
   const [load, setLoad] = React.useState(21);
   return (
     <Provider store={store}>
+      <Toaster />
       <div className=" container p-2 h-screen w-full">
         <div className="flex w-full justify-between flex-row-reverse mb-5">
           <CartBtn toggleDrawer={toggleDrawer} />
@@ -40,7 +44,7 @@ function TemporaryDrawer() {
           </section>{" "}
         </div>
         <ContainerCard load={load} />
-        <div className="w-full flex justify-center my-3">
+        <div className="w-full flex justify-center my-3 mt-10">
           <Button
             variant="outlined"
             onClick={() => setLoad((e) => (e = e + 8))}
@@ -48,6 +52,7 @@ function TemporaryDrawer() {
             Load More ...
           </Button>
         </div>
+        <Comments />
         <Drawer open={open} onClose={toggleDrawer(false)}>
           <Cart />
         </Drawer>
@@ -55,7 +60,8 @@ function TemporaryDrawer() {
     </Provider>
   );
 }
-// mr.rooter
+
+// -------------------
 
 function ContainerCard({ load }) {
   const dispatch = useDispatch();
@@ -104,4 +110,4 @@ function CartBtn({ toggleDrawer }) {
   );
 }
 
-export default TemporaryDrawer;
+export default App;
