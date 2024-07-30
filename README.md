@@ -1,6 +1,6 @@
 # My React Project
 
-This project is a React application bootstrapped with Vite, styled with Tailwind CSS, and utilizing Material-UI for UI components. It fetches data from JSONPlaceholder and manages state using Redux Toolkit.
+This project is a React application bootstrapped with Vite, styled with Tailwind CSS, and utilizing Material-UI for UI components. It fetches data from JSONPlaceholder and manages state using Redux Toolkit. for show clcik => <a href="https://66a82ebdbbc01ea7302aa984--bucolic-croissant-6cdd26.netlify.app/">Heare</a>
 
 ## Table of Contents
 

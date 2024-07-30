@@ -81,10 +81,10 @@ function Comments() {
   return (
     <div>
       <section className="py-8 lg:py-16 antialiased">
-        <div className="max-w-2xl mx-auto px-4">
+        <div className="max-w-5xl mx-auto px-4">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg lg:text-2xl font-bold text-gray-900">
-              Discussion ({comments.length})
+              Comments ({comments?.length})
             </h2>
           </div>
           <form className="mb-6" onSubmit={handleSubmit}>
@@ -127,7 +127,12 @@ function Comments() {
                 aria-labelledby="parent-modal-title"
                 aria-describedby="parent-modal-description"
               >
-                <Box sx={{ ...style }} gap="10px" display="flex" flexDirection="column">
+                <Box
+                  sx={{ ...style }}
+                  gap="10px"
+                  display="flex"
+                  flexDirection="column"
+                >
                   <h2
                     id="parent-modal-title"
                     className="py-2 pb-5 text-lg font-bold text-gray-600"
@@ -202,9 +207,11 @@ function Comments() {
               Post comment
             </button>
           </form>
-          {comments.map((c) => (
-            <Comment key={c.id} c={c} dispatch={dispatch} />
-          ))}
+          <div className="grid grid-cols-1 divide-y-2 ">
+            {comments?.map((c) => (
+              <Comment key={c.id} c={c} dispatch={dispatch} />
+            ))}
+          </div>
         </div>
       </section>
     </div>
@@ -282,7 +289,10 @@ function Comment({ c, dispatch }) {
           <ul className="py-1 text-sm text-gray-700">
             <li>
               <button
-                onClick={startEditing}
+                onClick={() => {
+                  startEditing();
+                  setOpen(!open);
+                }}
                 className="block py-2 px-4 hover:bg-gray-100 w-full text-left"
               >
                 Edit
@@ -316,9 +326,11 @@ function Comment({ c, dispatch }) {
       {isEditing ? (
         <div>
           <textarea
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded min-h"
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
+            placeholder="Write a comment..."
+            rows={6}
           />
           <button
             className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"

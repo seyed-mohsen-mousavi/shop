@@ -29,29 +29,21 @@ function App() {
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-  const [load, setLoad] = React.useState(21);
+  const [loadData, setLoadData] = React.useState(21);
   return (
     <Provider store={store}>
       <Toaster />
       <div className=" container p-2 h-screen w-full">
         <div className="flex w-full justify-between flex-row-reverse mb-5">
           <CartBtn toggleDrawer={toggleDrawer} />
-          <section className="wrapper">
-            <div className="top">Shop</div>
+          <a href="#" className="wrapper">
+            <div className="top">Star 🌟</div>
             <div className="bottom" aria-hidden="true">
-              Shop
+            Star 🌟
             </div>
-          </section>{" "}
+          </a>{" "}
         </div>
-        <ContainerCard load={load} />
-        <div className="w-full flex justify-center my-3 mt-10">
-          <Button
-            variant="outlined"
-            onClick={() => setLoad((e) => (e = e + 8))}
-          >
-            Load More ...
-          </Button>
-        </div>
+        <ContainerCard load={loadData} setLoadData={setLoadData} />
         <Comments />
         <Drawer open={open} onClose={toggleDrawer(false)}>
           <Cart />
@@ -63,35 +55,45 @@ function App() {
 
 // -------------------
 
-function ContainerCard({ load }) {
+function ContainerCard({ load, setLoadData }) {
   const dispatch = useDispatch();
   const { loading, data, error } = useSelector((state) => state.data);
   React.useEffect(() => {
     dispatch(getAsyncData()), [dispatch];
   }, [dispatch]);
-  if (error) return <p>Please Try Again later :(</p>;
+  if (error) return <p className="text-2xl">Please Try Again later :(</p>;
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center w-full">
-      {loading ? (
-        <>
-          {" "}
-          <LoadingCard />
-          <LoadingCard />
-          <LoadingCard />
-          <LoadingCard />
-          <LoadingCard />
-          <LoadingCard />
-          <LoadingCard />
-          <LoadingCard />
-        </>
-      ) : (
-        data.map((e) => {
-          if (e.id < load) {
-            return <Card key={e.id} item={e} />;
-          }
-        })
-      )}
-    </div>
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center w-full">
+        {loading ? (
+          <>
+            {" "}
+            <LoadingCard />
+            <LoadingCard />
+            <LoadingCard />
+            <LoadingCard />
+            <LoadingCard />
+            <LoadingCard />
+            <LoadingCard />
+            <LoadingCard />
+          </>
+        ) : (
+          data.map((e) => {
+            if (e.id < load) {
+              return <Card key={e.id} item={e} />;
+            }
+          })
+        )}
+      </div>
+      <div className="w-full flex justify-center my-3 mt-10">
+        <Button
+          variant="outlined"
+          onClick={() => setLoadData((e) => (e = e + 8))}
+        >
+          Load More ...
+        </Button>
+      </div>
+    </>
   );
 }
 function CartBtn({ toggleDrawer }) {
